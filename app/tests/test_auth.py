@@ -1,45 +1,32 @@
-import os
-import sys
-from pathlib import Path
-
-# Ensure app package path is importable
-THIS_DIR = Path(__file__).resolve().parent
-APP_DIR = str(THIS_DIR.parent)
-sys.path.insert(0, APP_DIR)
-
-import json
-import time
 import pytest
 from fastapi.testclient import TestClient
+from uuid import uuid4
 
-# Set test environment before importing the app so settings pick them up
-os.environ.setdefault("DATABASE_URL", "sqlite:///:memory:")
-os.environ.setdefault("SECRET_KEY", "testsecretkey")
-os.environ.setdefault("ALGORITHM", "HS256")
-os.environ.setdefault("ACCESS_TOKEN_EXPIRE_MINUTES", "5")
-
-from main import app  # import after env is set
-
+from main import app
 
 client = TestClient(app)
 
 
 def test_register_login_verify_flow():
-    email = "testuser@example.com"
+    # Use a unique email each run to avoid collisions with existing DB state
+    email = f"testuser+{uuid4().hex}@example.com"
     password = "s3cret"
 
     # Register
-    r = client.post("/api/user/register", json={"email": email, "password": password})
+    r = client.post("/api/user/register",
+                    json={"email": email, "password": password})
     assert r.status_code == 200, r.text
     body = r.json()
     assert body["email"] == email
 
     # Duplicate registration should fail
-    r2 = client.post("/api/user/register", json={"email": email, "password": password})
+    r2 = client.post("/api/user/register",
+                     json={"email": email, "password": password})
     assert r2.status_code == 400
 
     # Login (OAuth2 form)
-    r3 = client.post("/api/user/token", data={"username": email, "password": password})
+    r3 = client.post("/api/user/token",
+                     data={"username": email, "password": password})
     assert r3.status_code == 200, r3.text
     token = r3.json()["access_token"]
     assert token

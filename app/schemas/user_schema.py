@@ -10,6 +10,7 @@ from models.user_model import ExperienceLevel
 
 # -- Base Schemas --
 
+
 class DisgustBase(BaseModel):
     """
     Base Schema for a user's disgust (ingredient they dislike).
@@ -26,7 +27,8 @@ class AllergyBase(BaseModel):
 
 class ProfileBase(BaseModel):
     """
-    Base Schema for a user's profile, which includes their experience level and whether or not they want challenging recipes.
+    Base Schema for a user's profile, which includes their experience level and
+    whether or not they want challenging recipes.
     """
     experience_level: Optional[ExperienceLevel] = ExperienceLevel.BEGINNER
     challenge_mode_active: Optional[bool] = False
@@ -38,21 +40,18 @@ class DisgustCreate(DisgustBase):
     """
     Schema for creating a new disgust entry.
     """
-    pass
 
 
 class AllergyCreate(AllergyBase):
     """
     Schema for creating a new allergy entry.
     """
-    pass
 
 
 class ProfileCreate(ProfileBase):
     """
     Schema for creating a new user profile.
     """
-    pass
 
 
 class UserCreate(BaseModel):

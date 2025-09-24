@@ -66,8 +66,8 @@ def get_current_user(
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
-    except JWTError:
-        raise credentials_exception
+    except JWTError as exception:
+        raise credentials_exception from exception
     repo = UserRepository(db)
     user = repo.get_user_by_email(email=email)
     if user is None:

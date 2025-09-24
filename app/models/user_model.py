@@ -19,7 +19,7 @@ class ExperienceLevel(enum.Enum):
     ADVANCED = "advanced"
 
 
-cascade_behavior = "all, delete-orphan"
+CASCADE_BEHAVIOUR = "all, delete-orphan"
 
 
 class User(Base):
@@ -31,7 +31,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     profile = relationship("Profile", back_populates="user",
-                           uselist=False, cascade=cascade_behavior)
+                           uselist=False, cascade=CASCADE_BEHAVIOUR)
 
 
 class Profile(Base):
@@ -46,9 +46,9 @@ class Profile(Base):
     challenge_mode_active = Column(Boolean, default=False)
     user = relationship("User", back_populates="profile")
     disgusts = relationship(
-        "Disgust", back_populates="profile", cascade=cascade_behavior)
+        "Disgust", back_populates="profile", cascade=CASCADE_BEHAVIOUR)
     allergies = relationship(
-        "Allergy", back_populates="profile", cascade=cascade_behavior)
+        "Allergy", back_populates="profile", cascade=CASCADE_BEHAVIOUR)
 
 
 class Disgust(Base):

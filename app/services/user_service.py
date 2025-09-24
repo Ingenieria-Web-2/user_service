@@ -1,3 +1,7 @@
+"""
+Service layer for user-related operations.
+"""
+
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 

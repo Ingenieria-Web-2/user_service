@@ -2,7 +2,7 @@
 User API Router
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -66,7 +66,12 @@ def verify_token(current_user: UserModel = Depends(security.get_current_user)):
     If the token is valid, this function will execute and return a 200 OK
     response, which NGINX will interpret as an authentication success.
     """
-    return {"status": "ok", "user_id": current_user.id}
+    # Set the user id as a response header so the gateway can forward it to
+    # downstream services. Keep the body for debugging as well.
+    headers = {"X-User-ID": str(current_user.id)}
+    return Response(content='{"status": "ok", "user_id": %d}' % current_user.id,
+                    media_type="application/json",
+                    headers=headers)
 
 
 @router.get("/me", response_model=user_schema.User)

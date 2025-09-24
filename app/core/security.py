@@ -2,7 +2,7 @@
 Security utilities for password hashing and JWT token management.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import Depends, HTTPException, status
@@ -16,7 +16,8 @@ from db.session import get_db
 from models.user_model import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/token")
+# The token endpoint is mounted under "/api/user" in main, so tokenUrl should match
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/token")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -38,11 +39,13 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     Create a JWT access token.
     """
     to_encode = data.copy()
+    # Use timezone-aware UTC datetime for token expiry
     if expires_delta:
-        expire = datetime.now() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
+        expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    # JWT exp claim must be a numeric timestamp
+    to_encode.update({"exp": int(expire.timestamp())})
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
@@ -66,8 +69,8 @@ def get_current_user(
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
-    except JWTError as exception:
-        raise credentials_exception from exception
+    except JWTError as e:
+        raise credentials_exception from e
     repo = UserRepository(db)
     user = repo.get_user_by_email(email=email)
     if user is None:

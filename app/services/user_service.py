@@ -8,10 +8,16 @@ from schemas.user_schema import UserCreate
 
 
 class UserService:
+    """
+    Service layer for user-related operations.
+    """
     def __init__(self, db: Session = Depends(get_db)):
         self.repo = UserRepository(db)
 
     def register_user(self, user_data: UserCreate) -> User:
+        """
+        Register a new user and create a default profile.
+        """
         existing_user = self.repo.get_user_by_email(email=user_data.email)
         if existing_user:
             raise HTTPException(

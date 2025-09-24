@@ -1,3 +1,7 @@
+""""
+Main application entry point for the User microservice.
+"""
+
 from fastapi import FastAPI
 
 from api.routers import user_router
@@ -9,8 +13,3 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Users Microservice")
 
 app.include_router(user_router.router, prefix="/api/user", tags=["user"])
-
-
-@app.get("/")
-def read_root():
-    return {"service": "User Microservice is running"}

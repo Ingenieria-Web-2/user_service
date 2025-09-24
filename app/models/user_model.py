@@ -1,3 +1,7 @@
+"""
+User and Profile models with relationships and cascade behavior (sqlalchemy).
+"""
+
 import enum
 
 from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, String
@@ -7,6 +11,9 @@ from db.session import Base
 
 
 class ExperienceLevel(enum.Enum):
+    """
+    Experience levels for user profiles.
+    """
     BEGINNER = "beginner"
     INTERMEDIATE = "intermediate"
     ADVANCED = "advanced"
@@ -16,6 +23,9 @@ cascade_behavior = "all, delete-orphan"
 
 
 class User(Base):
+    """
+    User model representing application users.
+    """
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
@@ -25,6 +35,9 @@ class User(Base):
 
 
 class Profile(Base):
+    """
+    Profile model representing user profiles.
+    """
     __tablename__ = "profiles"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
@@ -39,6 +52,9 @@ class Profile(Base):
 
 
 class Disgust(Base):
+    """
+    Disgust model representing ingredients a user dislikes.
+    """
     __tablename__ = "disgusts"
     id = Column(Integer, primary_key=True, index=True)
     ingredient_name = Column(String, index=True, nullable=False)
@@ -47,6 +63,9 @@ class Disgust(Base):
 
 
 class Allergy(Base):
+    """
+    Allergy model representing ingredients a user is allergic to.
+    """
     __tablename__ = "allergies"
     id = Column(Integer, primary_key=True, index=True)
     ingredient_name = Column(String, index=True, nullable=False)

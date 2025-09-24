@@ -1,3 +1,7 @@
+"""
+Security utilities for password hashing and JWT token management.
+"""
+
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -16,14 +20,23 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/token")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verify a plain password against its hashed version.
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def hash_password(password: str) -> str:
+    """
+    Hash a plain password.
+    """
     return pwd_context.hash(password)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    """
+    Create a JWT access token.
+    """
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now() + expires_delta
@@ -38,6 +51,9 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
 ) -> User:
+    """
+    Retrieve the current user based on the JWT token.
+    """
     from repositories.user_repository import UserRepository
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

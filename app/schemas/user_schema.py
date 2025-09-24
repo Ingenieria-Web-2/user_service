@@ -5,6 +5,7 @@ User Schemas (pydantic models)
 from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr
+from pydantic import ConfigDict
 
 from models.user_model import ExperienceLevel
 
@@ -71,8 +72,7 @@ class Disgust(DisgustBase):
     id: int
     profile_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Allergy(AllergyBase):
@@ -82,8 +82,7 @@ class Allergy(AllergyBase):
     id: int
     profile_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Profile(ProfileBase):
@@ -95,8 +94,7 @@ class Profile(ProfileBase):
     disgusts: List[Disgust] = []
     allergies: List[Allergy] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class User(BaseModel):
@@ -107,8 +105,7 @@ class User(BaseModel):
     email: EmailStr
     profile: Optional[Profile] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # -- Token Schema --

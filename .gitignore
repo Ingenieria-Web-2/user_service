@@ -2,5 +2,4 @@
 **/.venv/
 
 # Ignore local environment and test database files
-.env
 app/test.db

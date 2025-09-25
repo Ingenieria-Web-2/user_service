@@ -2,7 +2,7 @@
 User API Router
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -14,14 +14,6 @@ from schemas import user_schema
 from services.user_service import UserService
 
 router = APIRouter()
-
-
-@router.get("/")
-def read_root():
-    """
-    Health check endpoint for the User microservice.
-    """
-    return {"service": "User Microservice is running"}
 
 
 @router.post("/register", response_model=user_schema.User)

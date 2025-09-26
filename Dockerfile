@@ -4,7 +4,8 @@ WORKDIR /usr/src/user_service
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r requirements.txt
 
 COPY .env .
 COPY app ./app

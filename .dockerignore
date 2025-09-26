@@ -1,4 +1,2 @@
-Dockerfile
-.env
-
-.venv/
+**/__pychache__/
+**/.pytest_cache/

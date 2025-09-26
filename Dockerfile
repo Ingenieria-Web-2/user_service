@@ -5,6 +5,4 @@ WORKDIR /usr/src/user_service
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR /usr/src/user_service/app
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

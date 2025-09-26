@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     """
     Application configuration settings.
     """
+
     DATABASE_URL: str
     SECRET_KEY: str
     ALGORITHM: str

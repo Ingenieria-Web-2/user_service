@@ -3,7 +3,6 @@ Security utilities for password hashing and JWT token management.
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -15,9 +14,8 @@ from app.core.config import settings
 from app.db.session import get_db
 from app.models.user_model import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-# The token endpoint is mounted under "/api/user" in main, so tokenUrl should match
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/token")
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -31,11 +29,11 @@ def hash_password(password: str) -> str:
     """
     Hash a plain password.
     """
-    password_bytes = password.encode('utf-8')
+    password_bytes = password.encode("utf-8")
     return pwd_context.hash(password_bytes)
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(data: dict[str, int | str], expires_delta: timedelta | None = None):
     """
     Create a JWT access token.
     """
@@ -67,7 +65,7 @@ def get_current_user(
     try:
         payload = jwt.decode(token, settings.SECRET_KEY,
                              algorithms=[settings.ALGORITHM])
-        email: str = payload.get("sub")
+        email = payload.get("sub")
         if email is None:
             raise credentials_exception
     except JWTError as e:

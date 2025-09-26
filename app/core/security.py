@@ -31,7 +31,8 @@ def hash_password(password: str) -> str:
     """
     Hash a plain password.
     """
-    return pwd_context.hash(password)
+    password_bytes = password.encode('utf-8')
+    return pwd_context.hash(password_bytes)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):

@@ -10,9 +10,9 @@ from db.session import Base, engine
 # Create all database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Users Microservice")
+app = FastAPI(title="Users Microservice", root_path="/api/user")
 
-app.include_router(user_router.router, prefix="/api/user", tags=["user"])
+app.include_router(user_router.router, tags=["user"])
 
 
 @app.get("/")

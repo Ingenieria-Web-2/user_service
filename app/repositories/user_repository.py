@@ -6,9 +6,9 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from core.security import hash_password
-from models.user_model import Profile, User
-from schemas.user_schema import UserCreate
+from app.core.security import hash_password
+from app.models.user_model import Profile, User
+from app.schemas.user_schema import UserCreate
 
 
 class UserRepository:

@@ -1,5 +1,3 @@
 **/__pycache__/
 **/.venv/
-
-# Ignore local environment and test database files
-app/test.db
+**/.pytest_cache/

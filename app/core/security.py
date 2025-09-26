@@ -11,9 +11,9 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from core.config import settings
-from db.session import get_db
-from models.user_model import User
+from app.core.config import settings
+from app.db.session import get_db
+from app.models.user_model import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # The token endpoint is mounted under "/api/user" in main, so tokenUrl should match
@@ -58,7 +58,7 @@ def get_current_user(
     """
     Retrieve the current user based on the JWT token.
     """
-    from repositories.user_repository import UserRepository
+    from app.repositories.user_repository import UserRepository
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

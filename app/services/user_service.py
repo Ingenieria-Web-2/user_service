@@ -5,10 +5,10 @@ Service layer for user-related operations.
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from db.session import get_db
-from models.user_model import User
-from repositories.user_repository import UserRepository
-from schemas.user_schema import UserCreate
+from app.db.session import get_db
+from app.models.user_model import User
+from app.repositories.user_repository import UserRepository
+from app.schemas.user_schema import UserCreate
 
 
 class UserService:

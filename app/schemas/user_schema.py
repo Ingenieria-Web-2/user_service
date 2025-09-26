@@ -7,7 +7,7 @@ from typing import List, Optional
 from pydantic import BaseModel, EmailStr
 from pydantic import ConfigDict
 
-from models.user_model import ExperienceLevel
+from app.models.user_model import ExperienceLevel
 
 # -- Base Schemas --
 

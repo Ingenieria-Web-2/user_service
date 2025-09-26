@@ -2,7 +2,8 @@ fastapi[standard]
 sqlalchemy
 psycopg2-binary
 pydantic-settings
-passlib[argon2]
+passlib
+argon2-cffi
 python-jose[cryptography]
 pytest
 pylint

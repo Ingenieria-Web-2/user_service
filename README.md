@@ -4,6 +4,8 @@ A FastAPI-based microservice that handles user authentication and management for
 
 ## API Endpoints
 
+The root of the endpoint is /api/user
+
 ### Public endpoints
 
 #### `GET /`

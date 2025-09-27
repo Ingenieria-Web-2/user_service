@@ -38,3 +38,10 @@ def test_register_login_verify_flow():
     assert "X-User-ID" in r4.headers
     body = r4.json()
     assert body.get("user_id") is not None
+
+    # Test /me endpoint - should return current user profile
+    r5 = client.get("/me", headers=headers)
+    assert r5.status_code == 200, r5.text
+    user_profile = r5.json()
+    assert user_profile["email"] == email
+    assert "id" in user_profile
